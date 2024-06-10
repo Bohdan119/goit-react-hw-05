@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react"
 import axios from "axios";
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
+import { useParams } from "react-router-dom";
 
-const MovieCast = ({ movieId }) => {
+const MovieCast = () => {
+    const { movieId } = useParams();
   const [cast, setCast] = useState([]);
 
   useEffect(() => {
     const fetchMovieCast = async () => {
-      const url = "https://api.themoviedb.org/3/trending/movie/day";
+      const url = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
       const token =
         "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiYzY3YTQ3ZDFlYjRmOTg2NjNiYWE1YjljZWFhZjM5YiIsInN1YiI6IjY2NjFkNzAxNWE3Y2M3N2U4MmNiYjhmMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lr6mApkHpa51x8ZPDeW1l4pp_-UlafHNI2_NBU_sc2Q";
       const options = {
@@ -38,9 +40,7 @@ const MovieCast = ({ movieId }) => {
     </div>
   );
 };
-MovieCast.propTypes = {
-  movieId: PropTypes.string.isRequired,
-};
+
 
 
 export default MovieCast;

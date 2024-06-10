@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 
@@ -57,25 +57,31 @@ function App() {
   return (
     <>
       <Navigation />
-      <Routes>
-        <Route path="/" element={<HomePage movies={trendingMovies} />} />
-        <Route
-          path="/movies"
-          element={
-            <MoviesPage onSearch={handleSearch} searchResults={searchResults} />
-          }
-        />
-        <Route
-          path="/movies/:movieId"
-          element={
-            <MovieDetailsPage
-              movie={selectedMovie}
-              onSelectMovie={handleMovieSelection}
-            />
-          }
-        />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<HomePage movies={trendingMovies} />} />
+          <Route
+            path="/movies"
+            element={
+              <MoviesPage
+                onSearch={handleSearch}
+                searchResults={searchResults}
+                onSelectMovie={handleMovieSelection}
+              />
+            }
+          />
+          <Route
+            path="/movies/:movieId"
+            element={
+              <MovieDetailsPage
+                movie={selectedMovie}
+                onSelectMovie={handleMovieSelection}
+              />
+            }
+          />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
     </>
   );
 }

@@ -1,13 +1,21 @@
-import { NavLink } from "react-router-dom"
-
+import { NavLink } from "react-router-dom";
 
 const Navigation = () => {
-    return (
-      <nav>
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/movies">Movies</NavLink>
-      </nav>
-    );
-}
+  const handleGoBack = () => {
+    if (document.referrer.includes("/movies")) {
+      window.history.back();
+    } else {
+      window.location.href = "/movies";
+    }
+  };
+
+  return (
+    <nav>
+      <NavLink to="/">Home</NavLink>
+      <NavLink to="/movies">Movies</NavLink>
+      <button onClick={handleGoBack}>Back</button>
+    </nav>
+  );
+};
 
 export default Navigation;
