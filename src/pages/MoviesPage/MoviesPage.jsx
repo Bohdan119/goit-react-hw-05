@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 
-
 const MoviesPage = ({ onSearch, searchResults, onSelectMovie }) => {
   const [searchFilm, setSearchFilm] = useState("");
 
@@ -47,6 +46,7 @@ const MoviesPage = ({ onSearch, searchResults, onSelectMovie }) => {
                   to={`/movies/${movie.id}`}
                   onClick={() => onSelectMovie(movie)}
                 >
+                  <span>{movie.title}</span>
                   {movie.poster_path && (
                     <img
                       src={`${imageBaseUrl}${movie.poster_path}`}
@@ -54,7 +54,6 @@ const MoviesPage = ({ onSearch, searchResults, onSelectMovie }) => {
                       style={{ width: "100px", marginRight: "10px" }}
                     />
                   )}
-                  <span>{movie.title}</span>
                 </Link>
               </li>
             ))}

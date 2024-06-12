@@ -1,5 +1,5 @@
 import { useState, useEffect, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import HomePage from "../../pages/HomePage/HomePage.jsx";
@@ -14,11 +14,46 @@ function App() {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
 
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+const handleGoBack = () => {
+  if (location.state && location.state.from) {
+    navigate(location.state.from);
+  } else {
+    navigate("/movies");
+  }
+};
+
+
+  const handleMovieSelection = (movie) => {
+    setSelectedMovie(movie);
+  };
+
+  const handleSearch = async (query) => {
+    try {
+      const url = `https://api.themoviedb.org/3/search/movie?query=${query}`;
+      const token =
+        "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiYzY3YTQ3ZDFlYjRmOTg2NjNiYWE1YjljZWFhZjM5YiIsInN1YiI6IjY2NjFkNzAxNWE3Y2M3N2U4MmNiYjhmMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lr6mApkHpa51x8ZPDeW1l4pp_-UlafHNI2_NBU_sc2Q";
+      const options = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get(url, options);
+      setSearchResults(data.results);
+    } catch (error) {
+      console.error("Error while searching for movies", error);
+    }
+  };
+
   useEffect(() => {
     const fetchTrendingMovies = async () => {
       try {
         const url = "https://api.themoviedb.org/3/trending/movie/day";
-        const token = "YOUR_API_TOKEN";
+        const token =
+          "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiYzY3YTQ3ZDFlYjRmOTg2NjNiYWE1YjljZWFhZjM5YiIsInN1YiI6IjY2NjFkNzAxNWE3Y2M3N2U4MmNiYjhmMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lr6mApkHpa51x8ZPDeW1l4pp_-UlafHNI2_NBU_sc2Q";
         const options = {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -34,29 +69,9 @@ function App() {
     fetchTrendingMovies();
   }, []);
 
-  const handleSearch = async (query) => {
-    try {
-      const url = `https://api.themoviedb.org/3/search/movie?query=${query}`;
-      const token = "YOUR_API_TOKEN";
-      const options = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const { data } = await axios.get(url, options);
-      setSearchResults(data.results);
-    } catch (error) {
-      console.error("Error while searching for movies", error);
-    }
-  };
-
-  const handleMovieSelection = (movie) => {
-    setSelectedMovie(movie);
-  };
-
   return (
     <>
-      <Navigation />
+      <Navigation handleGoBack={handleGoBack} />
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/" element={<HomePage movies={trendingMovies} />} />
@@ -74,8 +89,8 @@ function App() {
             path="/movies/:movieId"
             element={
               <MovieDetailsPage
-                movie={selectedMovie}
                 onSelectMovie={handleMovieSelection}
+                handleGoBack={handleGoBack}
               />
             }
           />

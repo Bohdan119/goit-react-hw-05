@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import axios from "axios";
-// import PropTypes from 'prop-types'
 import { useParams } from "react-router-dom";
 
 const MovieCast = () => {
@@ -20,26 +19,36 @@ const MovieCast = () => {
 
       try {
         const { data } = await axios.get(url, options);
-        setCast(data.cast);
+          setCast(data.cast);
+        //   console.dir(data);
       } catch (error) {
         console.error("Error fetching trending movies", error);
       }
     };
     fetchMovieCast();
   }, [movieId]);
-  return (
-    <div>
+    
+  const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
+  
+      return (
+          <div>
       <h3>Cast</h3>
       <ul>
-        {cast.map((actor) => (
+              {cast.map((actor) => (
           <li key={actor.cast_id}>
+            <img
+              src={`${imageBaseUrl}${actor.profile_path}`}
+              alt={actor.name}
+              style={{ width: "100px", marginBottom: "100px" }}
+            />
             {actor.name} as {actor.character}
           </li>
         ))}
+        
       </ul>
     </div>
   );
-};
+  };
 
 
 

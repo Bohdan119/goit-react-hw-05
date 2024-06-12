@@ -1,13 +1,10 @@
 import { NavLink } from "react-router-dom";
+import PropTypes from 'prop-types';
 
-const Navigation = () => {
-  const handleGoBack = () => {
-    if (document.referrer.includes("/movies")) {
-      window.history.back();
-    } else {
-      window.location.href = "/movies";
-    }
-  };
+const Navigation = ({handleGoBack}) => {
+
+
+  
 
   return (
     <nav>
@@ -16,6 +13,10 @@ const Navigation = () => {
       <button onClick={handleGoBack}>Back</button>
     </nav>
   );
+};
+
+Navigation.propTypes = {
+  handleGoBack: PropTypes.func.isRequired,
 };
 
 export default Navigation;
