@@ -1,5 +1,5 @@
 import { useState, useEffect, Suspense } from "react";
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 
 import HomePage from "../../pages/HomePage/HomePage.jsx";
@@ -7,25 +7,15 @@ import MovieDetailsPage from "../../pages/MovieDetailsPage/MovieDetailsPage.jsx"
 import MoviesPage from "../../pages/MoviesPage/MoviesPage.jsx";
 import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage.jsx";
 
+import MovieCast from "../MovieCast/MovieCast.jsx";
+import MovieReviews from "../MovieReviews/MovieReviews.jsx";
+
 import Navigation from "../../components/Navigation/Navigation.jsx";
 
 function App() {
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
-
-
-  const navigate = useNavigate();
-  const location = useLocation();
-
-const handleGoBack = () => {
-  if (location.state && location.state.from) {
-    navigate(location.state.from);
-  } else {
-    navigate("/movies");
-  }
-};
-
 
   const handleMovieSelection = (movie) => {
     setSelectedMovie(movie);
@@ -71,7 +61,7 @@ const handleGoBack = () => {
 
   return (
     <>
-      <Navigation handleGoBack={handleGoBack} />
+      <Navigation />
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/" element={<HomePage movies={trendingMovies} />} />
@@ -89,11 +79,14 @@ const handleGoBack = () => {
             path="/movies/:movieId"
             element={
               <MovieDetailsPage
+                selectedMovie={selectedMovie}
                 onSelectMovie={handleMovieSelection}
-                handleGoBack={handleGoBack}
               />
             }
-          />
+          >
+            <Route path="cast" element={<MovieCast />} />
+            <Route path="reviews" element={<MovieReviews />} />
+          </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

@@ -5,8 +5,7 @@ import axios from "axios";
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
-  // const navigate = useNavigate();
-  // const location = useLocation();
+
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
