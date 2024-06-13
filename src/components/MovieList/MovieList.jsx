@@ -17,6 +17,7 @@ const MovieList = ({ movies }) => {
               />
             )}
             {movie.title}
+            {movie.vote_average}
           </Link>
         </li>
       ))}

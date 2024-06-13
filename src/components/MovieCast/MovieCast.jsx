@@ -19,8 +19,7 @@ const MovieCast = () => {
 
       try {
         const { data } = await axios.get(url, options);
-          setCast(data.cast);
-        //   console.dir(data);
+        setCast(data.cast);
       } catch (error) {
         console.error("Error fetching trending movies", error);
       }

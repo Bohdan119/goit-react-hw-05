@@ -19,6 +19,7 @@ const HomePage = () => {
       try {
         const { data } = await axios.get(url, options);
         setMovies(data.results);
+        console.dir(data);
       } catch (error) {
         console.error("Error fetching trending movies", error);
       }

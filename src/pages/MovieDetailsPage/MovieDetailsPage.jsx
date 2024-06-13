@@ -44,7 +44,9 @@ const MovieDetailsPage = ({ selectedMovie, onSelectMovie }) => {
 
   return (
     <div>
+      <Link to={location.state?.from || "/movies"}>Go back</Link>
       <h2>{movie.title}</h2>
+      {movie.vote_average}
       {movie.poster_path && (
         <img
           src={`${imageBaseUrl}${movie.poster_path}`}
@@ -53,7 +55,6 @@ const MovieDetailsPage = ({ selectedMovie, onSelectMovie }) => {
         />
       )}
       <Suspense fallback={<div>Loading...</div>}>
-        <Link to={location.state?.from || "/movies"}>Go back</Link>
         <Link to="cast">Cast</Link>
         <Link to="reviews">Reviews</Link>
         <Outlet />
