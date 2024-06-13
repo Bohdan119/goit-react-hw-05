@@ -42,9 +42,16 @@ const MovieDetailsPage = ({ selectedMovie, onSelectMovie }) => {
 
   const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
 
+const goBackLink =
+  location.state && location.state.from
+    ? location.state.from === "/"
+      ? "/"
+      : location.state.from
+    : "/movies";
+  
   return (
     <div>
-      <Link to={location.state?.from || "/movies"}>Go back</Link>
+      <Link to={goBackLink}>Go back</Link>
       <h2>{movie.title}</h2>
       {movie.vote_average}
       {movie.poster_path && (
