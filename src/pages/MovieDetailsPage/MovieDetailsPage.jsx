@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
 import { Link, useParams, useLocation, Outlet } from "react-router-dom";
 import axios from "axios";
 import PropTypes from "prop-types";
@@ -7,6 +7,8 @@ const MovieDetailsPage = ({ selectedMovie, onSelectMovie }) => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(selectedMovie);
   const location = useLocation();
+
+  const goBackLink = useRef(location.state || "/");
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -42,16 +44,9 @@ const MovieDetailsPage = ({ selectedMovie, onSelectMovie }) => {
 
   const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
 
-const goBackLink =
-  location.state && location.state.from
-    ? location.state.from === "/"
-      ? "/"
-      : location.state.from
-    : "/movies";
-  
   return (
     <div>
-      <Link to={goBackLink}>Go back</Link>
+      <Link to={goBackLink.current}>Go back</Link>
       <h2>{movie.title}</h2>
       {movie.vote_average}
       {movie.poster_path && (

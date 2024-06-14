@@ -1,26 +1,17 @@
-import { Link, useLocation} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const MovieList = ({ movies }) => {
   const location = useLocation();
-  const goBackLink =
-    location.state && location.state.from
-      ? location.state.from === "/"
-        ? "/"
-        : location.state.from
-      : "/movies";
-  
-
 
   const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
 
   return (
     <div>
-      <Link to={goBackLink}>Go Back </Link>
       <ul>
         {movies.map((movie) => (
           <li key={movie.id}>
-            <Link to={`/movies/${movie.id}`}>
+            <Link to={`/movies/${movie.id}`} state={location}>
               {movie.poster_path && (
                 <img
                   src={`${imageBaseUrl}${movie.poster_path}`}
