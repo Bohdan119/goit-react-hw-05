@@ -7,8 +7,7 @@ const MovieDetailsPage = ({ selectedMovie, onSelectMovie }) => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(selectedMovie);
   const location = useLocation();
-
-  const goBackLink = useRef(location.state || "/");
+  const goBackLink = useRef(location.state?.from || '/');
 
   useEffect(() => {
     const fetchMovieDetails = async () => {

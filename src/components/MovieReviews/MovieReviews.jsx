@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams} from "react-router-dom";
 import axios from "axios";
 
-const MovieDetailsPage = () => {
+const MovieReviews = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
-
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -28,12 +27,9 @@ const MovieDetailsPage = () => {
     fetchMovieDetails();
   }, [movieId]);
 
-
-
   if (!movie) {
     return <div>Loading...</div>;
   }
-
 
   return (
     <div>
@@ -43,4 +39,4 @@ const MovieDetailsPage = () => {
   );
 };
 
-export default MovieDetailsPage;
+export default MovieReviews;
