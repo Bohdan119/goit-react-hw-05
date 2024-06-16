@@ -51,10 +51,10 @@ const MovieDetailsPage = () => {
         )}
       </div>
       <nav>
-        <Link to={`cast`} state={{ from: goBackLink }}>
+        <Link to={`cast`} state={{ from: goBackLink.current }}>
           Cast
         </Link>
-        <Link to={`reviews`} state={{ from: goBackLink }}>
+        <Link to={`reviews`} state={{ from: goBackLink.current }}>
           Reviews
         </Link>
       </nav>
