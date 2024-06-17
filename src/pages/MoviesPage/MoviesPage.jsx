@@ -1,19 +1,24 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 
 const MoviesPage = ({ searchResults, setSearchResults }) => {
   const [searchFilm, setSearchFilm] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
 
+  const query = searchParams.get("query") || "";
+
   useEffect(() => {
-    const handleSearch = async (query) => {
+    const fetchMovies = async (query) => {
+      if (query.trim() === "") return;
+
       try {
         const url = `https://api.themoviedb.org/3/search/movie?query=${query}`;
-              const token =
-                "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiYzY3YTQ3ZDFlYjRmOTg2NjNiYWE1YjljZWFhZjM5YiIsInN1YiI6IjY2NjFkNzAxNWE3Y2M3N2U4MmNiYjhmMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lr6mApkHpa51x8ZPDeW1l4pp_-UlafHNI2_NBU_sc2Q";
+        const token =
+          "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiYzY3YTQ3ZDFlYjRmOTg2NjNiYWE1YjljZWFhZjM5YiIsInN1YiI6IjY2NjFkNzAxNWE3Y2M3N2U4MmNiYjhmMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lr6mApkHpa51x8ZPDeW1l4pp_-UlafHNI2_NBU_sc2Q";
         const options = {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -23,13 +28,12 @@ const MoviesPage = ({ searchResults, setSearchResults }) => {
         setSearchResults(data.results);
       } catch (error) {
         console.error("Error while searching for movies", error);
+        toast.error("Failed to fetch movies.");
       }
     };
 
-    if (searchFilm.trim() !== "") {
-      handleSearch(searchFilm);
-    }
-  }, [searchFilm, setSearchResults]);
+    fetchMovies(query);
+  }, [query, setSearchResults]);
 
   const handleInputChange = (event) => {
     setSearchFilm(event.target.value);
@@ -41,7 +45,7 @@ const MoviesPage = ({ searchResults, setSearchResults }) => {
       toast.error("Please enter a word");
       return;
     }
-
+    setSearchParams({ query: searchFilm });
   };
 
   const imageBaseUrl = "https://image.tmdb.org/t/p/w500";

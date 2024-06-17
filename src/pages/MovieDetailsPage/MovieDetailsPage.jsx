@@ -41,7 +41,6 @@ const MovieDetailsPage = () => {
       <Link to={goBackLink.current}>Go Back</Link>
       <div>
         <h1>{movie.title}</h1>
-        <p>{movie.overview}</p>
         {movie.poster_path && (
           <img
             src={`${imageBaseUrl}${movie.poster_path}`}
